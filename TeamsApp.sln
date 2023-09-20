@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.ApiTeam.Service", "Teams.ApiTeam.Service\Teams.ApiTeam.Service.csproj", "{0D66B740-75E4-419D-B35D-42332EA73C7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.ApiMember.Service", "Teams.ApiMember.Service\Teams.ApiMember.Service.csproj", "{8574E403-38DA-44B8-971C-52D902038946}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.ApiManager", "Teams.ApiManager\Teams.ApiManager.csproj", "{2AF250CC-E8E3-467C-99E7-7044570A03C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D66B740-75E4-419D-B35D-42332EA73C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D66B740-75E4-419D-B35D-42332EA73C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D66B740-75E4-419D-B35D-42332EA73C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D66B740-75E4-419D-B35D-42332EA73C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8574E403-38DA-44B8-971C-52D902038946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8574E403-38DA-44B8-971C-52D902038946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8574E403-38DA-44B8-971C-52D902038946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8574E403-38DA-44B8-971C-52D902038946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF250CC-E8E3-467C-99E7-7044570A03C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF250CC-E8E3-467C-99E7-7044570A03C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF250CC-E8E3-467C-99E7-7044570A03C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF250CC-E8E3-467C-99E7-7044570A03C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

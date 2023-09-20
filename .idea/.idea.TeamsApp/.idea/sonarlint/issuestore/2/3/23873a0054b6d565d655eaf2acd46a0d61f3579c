@@ -1,0 +1,3 @@
+
+‰csharpsquid:S101"hRename class 'ITeamMemberService' to match pascal case naming rules, consider using 'TeamMemberService'.(ªφθώÿÿÿÿ
+dcsharpsquid:S2094"BRemove this empty class, write its code or make it an "interface".(ªφθώÿÿÿÿ
