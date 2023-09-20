@@ -16,5 +16,6 @@ public class TeamMember
     public string Position { get; set; } = null!;
 
     public string Phone { get; set; } = null!;
-    [ForeignKey("TeamId")] public int TeamId { get; set; }
+
+    [Required] public int TeamId { get; set; }
 }
