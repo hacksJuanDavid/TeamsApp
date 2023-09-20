@@ -2,7 +2,7 @@ using Teams.ApiTeam.Service.Models;
 
 namespace Teams.ApiTeam.Service.Interfaces;
 
-public interface ITeamRepository
+public interface ITeamService
 {
     // GetAllTeams
     Task<List<Team>> GetAllTeamsAsync();

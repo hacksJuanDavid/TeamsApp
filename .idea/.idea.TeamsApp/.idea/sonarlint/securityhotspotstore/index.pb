@@ -59,8 +59,6 @@ d
 4Teams.ApiTeam.Service/Repositories/TeamRepository.cs,2/0/201c642b369a9eb026c6d5121bea0aec1d32cbd5
 c
 3Teams.ApiTeam.Service/Interfaces/ITeamRepository.cs,3/1/314c409c9f2cf2d61a8d4b1707d7e432711860b6
-a
-1Teams.ApiTeam.Service/Interfaces/ITeamServices.cs,3/3/3381576b592ede695b5cbfa56cb8107256310b61
 h
 8Teams.ApiMember.Service/Interfaces/ITeamMemberService.cs,2/3/23873a0054b6d565d655eaf2acd46a0d61f3579c
 k
@@ -75,3 +73,15 @@ _
 /Teams.ApiMember.Service/Settings/AppSettings.cs,e/f/ef8afcb3d42c726a8c47b0df908293aa44187fa0
 k
 ;Teams.ApiMember.Service/Controllers/TeamMemberController.cs,6/a/6a01610b8a0c38de5b1d1df96a873ab6a06add34
+X
+(Teams.ApiMember.Service/appsettings.json,0/6/061c05d05c0b9dfaf5fcdc11b020e30602304dfe
+V
+&Teams.ApiTeam.Service/appsettings.json,c/9/c9a1f275bf6b633026d54f3c05e77279a91f8dcb
+R
+"Teams.ApiMember.Service/Program.cs,2/d/2d10ed6b16de06fbbbfc06119d35726f7f630bb5
+`
+0Teams.ApiTeam.Service/Interfaces/ITeamService.cs,c/0/c05cfc3f9c1c67190280cd4bb73a2344acc051ed
+c
+3Teams.ApiTeam.Service/Controllers/TeamController.cs,e/7/e7b9d56fb22561c535e8dbadcfeddf82ae3f1f2f
+P
+ Teams.ApiTeam.Service/Program.cs,1/9/19dc88614778e0b298b4f1ac1b409a058ac8d0d2

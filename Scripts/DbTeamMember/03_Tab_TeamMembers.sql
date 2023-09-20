@@ -7,6 +7,3 @@ CREATE TABLE `teamMemberdb`.`TeamMembers` (
     `Position`  VARCHAR(20) NULL,
     `Phone`  VARCHAR(50) NULL,
   PRIMARY KEY (`Id`));
-
-ALTER TABLE `teamMemberdb`.`TeamMembers`
-ADD FOREIGN KEY (TeamId) REFERENCES Teams(Id);
