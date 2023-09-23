@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Teams.ApiTeam.Service.Context;
 using Teams.ApiTeam.Service.Extensions;
+using Teams.ApiTeam.Service.Middlewares;
 
 //  Create the builder with the default configuration
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddServices();
+
+// Add AutoMapper
 builder.Services.AddMapping();
+
+// Add FluentValidation
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+
+// Add Controllers
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,6 +36,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Add exception handler
+app.ConfigureExceptionHandler();
 
 app.UseHttpsRedirection();
 

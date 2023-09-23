@@ -1,4 +1,5 @@
 using Teams.ApiManager.Extensions;
+using Teams.ApiManager.Middlewares;
 using Teams.ApiManager.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Add exception handler
+app.ConfigureExceptionHandler();
 
 app.UseHttpsRedirection();
 
