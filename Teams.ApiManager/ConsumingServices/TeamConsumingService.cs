@@ -5,6 +5,7 @@ using RestSharp;
 using Teams.ApiManager.Interfaces;
 using Teams.ApiManager.Settings;
 using Teams.ApiManager.Dtos;
+using Teams.ApiManager.Exceptions;
 
 namespace Teams.ApiManager.ConsumingServices;
 
@@ -53,7 +54,7 @@ public class TeamConsumingService : ITeamConsumingService
         }
         else
         {
-            throw new ArgumentException($"Error create team: {response.StatusCode}");
+            throw new BadRequestException($"Error create team: {response.StatusCode}");
         }
     }
 
@@ -64,10 +65,10 @@ public class TeamConsumingService : ITeamConsumingService
         var request = new RestRequest("Team/");
 
         // Execute request
-        var response = await _client.ExecuteAsync(request);
+        var response = await _client.GetAsync(request);
 
         // Check status code
-        if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+        if (response.IsSuccessful)
         {
             // Content
             var content = response.Content;
@@ -81,7 +82,7 @@ public class TeamConsumingService : ITeamConsumingService
             }
         }
 
-        throw new ArgumentException($"Error get all teams: {response.StatusCode}");
+        throw new NotFoundException($"Error get all teams: {response.StatusCode}");
     }
 
     // GetTeamById
@@ -94,10 +95,10 @@ public class TeamConsumingService : ITeamConsumingService
         request.AddUrlSegment("id", id);
 
         // Execute request
-        var response = await _client.ExecuteAsync(request);
+        var response = await _client.GetAsync(request);
 
         // Check status code
-        if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+        if (response.IsSuccessful)
         {
             // Content
             var content = response.Content;
@@ -112,7 +113,7 @@ public class TeamConsumingService : ITeamConsumingService
             }
         }
 
-        throw new ArgumentException($"Error get team by id: {response.StatusCode}");
+        throw new NotFoundException($"Team member with id {id} not found");
     }
 
     // UpdateTeam
@@ -146,7 +147,7 @@ public class TeamConsumingService : ITeamConsumingService
         }
         else
         {
-            throw new ArgumentException($"Error update team: {response.StatusCode}");
+            throw new BadRequestException($"Error update team: {response.StatusCode}");
         }
     }
 
@@ -165,7 +166,7 @@ public class TeamConsumingService : ITeamConsumingService
         // Check status code
         if (!response.IsSuccessful)
         {
-            throw new ArgumentException($"Error delete team: {response.StatusCode}");
+            throw new BadRequestException($"Error delete team: {response.StatusCode}");
         }
 
         // Delete correct
