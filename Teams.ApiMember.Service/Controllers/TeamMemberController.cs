@@ -113,4 +113,10 @@ public class TeamMemberController : ControllerBase
     }
 
     // Get /members/{id}/teams
+    [HttpGet("{memberId}/teams")]
+    public async Task<IActionResult> GetTeamsByMemberIdAsync(int memberId)
+    {
+        var teams = await _teamMemberRepository.GetTeamsByMemberIdAsync(memberId);
+        return Ok(_mapper.Map<List<TeamDto>, List<TeamDto>>(teams));
+    }
 }

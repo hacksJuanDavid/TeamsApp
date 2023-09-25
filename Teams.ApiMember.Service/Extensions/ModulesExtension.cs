@@ -1,4 +1,5 @@
 using AutoMapper;
+using RestSharp;
 using FluentValidation;
 using Teams.ApiMember.Service.Dtos;
 using Teams.ApiMember.Service.Interfaces;
@@ -15,6 +16,9 @@ public static class ModulesExtension
     // Function AddServices
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
+        // Add RestSharp
+        services.AddScoped<RestClient>();
+
         // Add TeamMemberService
         services.AddScoped<ITeamMemberService, TeamMemberService>();
 
@@ -23,7 +27,7 @@ public static class ModulesExtension
 
         return services;
     }
-    
+
     // Function AddAutoMapper
     public static IServiceCollection AddMapping(this IServiceCollection services)
     {
@@ -35,7 +39,7 @@ public static class ModulesExtension
 
         return services;
     }
-    
+
     // Function AddFluentValidationAutoValidation
     public static IServiceCollection AddFluentValidationAutoValidation(this IServiceCollection services)
     {
