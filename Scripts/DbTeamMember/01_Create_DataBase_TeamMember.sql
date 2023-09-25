@@ -1,1 +1,1 @@
-CREATE DATABASE `teamMemberdb` ;
+CREATE DATABASE `membersservicedb` ;

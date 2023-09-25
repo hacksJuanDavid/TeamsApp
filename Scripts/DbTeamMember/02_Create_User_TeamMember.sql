@@ -1,4 +1,4 @@
-/*DROP USER 'teamMemberdb'@'localhost' ;*/
-CREATE USER 'teamMemberdb'@'localhost' IDENTIFIED BY 'T3M34s4msUs3r*01';
-GRANT ALL PRIVILEGES ON *.* TO 'teamMemberdb'@'localhost' WITH GRANT OPTION;
+/*DROP USER 'membersservicedb'@'localhost' ;*/
+CREATE USER 'membersservicedb'@'localhost' IDENTIFIED BY 'T3M34s4msUs3r*01';
+GRANT ALL PRIVILEGES ON *.* TO 'membersservicedb'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;

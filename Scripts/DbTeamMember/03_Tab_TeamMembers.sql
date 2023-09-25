@@ -1,4 +1,4 @@
-CREATE TABLE `teamMemberdb`.`TeamMembers` (
+CREATE TABLE `membersservicedb`.`TeamMembers` (
     `Id` INT NOT NULL AUTO_INCREMENT,
     `TeamId` INT NOT NULL,
     `FirstName` VARCHAR(50) NOT NULL,
