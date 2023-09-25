@@ -160,4 +160,29 @@ public class TeamMemberConsumingService : ITeamMemberConsumingService
             throw new BadRequestException($"Error delete teamMember: {response.StatusCode}");
         }
     }
+
+    public async Task<List<TeamDto>?> GetTeamsByMemberIdAsync(int memberId)
+    {
+        // GET api/TeamMember/{memberId}/teams
+        var request = new RestRequest("TeamMember/{memberId}/teams");
+
+        // Add id to request
+        request.AddUrlSegment("memberId", memberId);
+
+        // Execute request
+        var response = await _client.GetAsync(request);
+
+        // Check status code
+        if (response.IsSuccessful)
+        {
+            // Deserialize response as a list of TeamDto
+            var teams = JsonConvert.DeserializeObject<List<TeamDto>>(response.Content!);
+
+            return teams;
+        }
+        else
+        {
+            throw new BadRequestException($"Error get teams by member id: {response.StatusCode}");
+        }
+    }
 }

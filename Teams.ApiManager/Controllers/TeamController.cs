@@ -99,4 +99,18 @@ public class TeamController : ControllerBase
         await _teamConsumingService.DeleteTeamAsync(id);
         return Ok();
     }
+    
+    [HttpGet("{id}/members")]
+    public async Task<IActionResult> GetTeamMembersByTeamIdAsync(int id)
+    {
+        // if not data return bad request
+        if (await _teamConsumingService.GetTeamMembersByTeamIdAsync(id) == null)
+        {
+            throw new BadRequestException("Team members not found");
+        }
+
+        // Get team members by team id
+        var teamMembersResponse = await _teamConsumingService.GetTeamMembersByTeamIdAsync(id);
+        return Ok(teamMembersResponse);
+    }
 }

@@ -18,4 +18,7 @@ public interface ITeamMemberConsumingService
     
     // DeleteTeamMember
     Task<TeamMemberDto?> DeleteTeamMemberAsync(int id);
+    
+    // GetTeamsByMemberIdAsync
+    Task<List<TeamDto>?> GetTeamsByMemberIdAsync(int memberId);
 }

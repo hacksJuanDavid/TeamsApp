@@ -5,20 +5,19 @@ using Teams.ApiManager.Interfaces;
 
 namespace Teams.ApiManager.Controllers;
 
-
 [Route("api/[controller]")]
 [ApiController]
 public class TeamMemberController : ControllerBase
 {
     // Variables
     private readonly ITeamMemberConsumingService _teamMemberConsumingService;
-    
+
     // Constructor
     public TeamMemberController(ITeamMemberConsumingService teamMemberConsumingService)
     {
         _teamMemberConsumingService = teamMemberConsumingService;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> CreateTeamMemberAsync(TeamMemberDto? teamMember)
     {
@@ -38,7 +37,7 @@ public class TeamMemberController : ControllerBase
         var teamMemberResponse = await _teamMemberConsumingService.CreateTeamMemberAsync(teamMember);
         return Ok(teamMemberResponse);
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetAllTeamMembersAsync()
     {
@@ -52,7 +51,7 @@ public class TeamMemberController : ControllerBase
         var teamMembersResponse = await _teamMemberConsumingService.GetAllTeamMembersAsync();
         return Ok(teamMembersResponse);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetTeamMemberByIdAsync(int id)
     {
@@ -66,7 +65,7 @@ public class TeamMemberController : ControllerBase
         var teamMemberResponse = await _teamMemberConsumingService.GetTeamMemberByIdAsync(id);
         return Ok(teamMemberResponse);
     }
-    
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTeamMemberAsync(int id, TeamMemberDto? teamMember)
     {
@@ -77,16 +76,16 @@ public class TeamMemberController : ControllerBase
         }
 
         // if teamMember not updated return bad request
-        if (await _teamMemberConsumingService.UpdateTeamMemberAsync(id, teamMember) == null)
+        if (await _teamMemberConsumingService.UpdateTeamMemberAsync(id, teamMember)! == null)
         {
             throw new BadRequestException("TeamMember not updated");
         }
 
         // Update teamMember
-        var teamMemberResponse = await _teamMemberConsumingService.UpdateTeamMemberAsync(id, teamMember);
+        var teamMemberResponse = await _teamMemberConsumingService.UpdateTeamMemberAsync(id, teamMember)!;
         return Ok(teamMemberResponse);
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTeamMemberAsync(int id)
     {
@@ -99,5 +98,19 @@ public class TeamMemberController : ControllerBase
         // Delete teamMember
         var teamMemberResponse = await _teamMemberConsumingService.DeleteTeamMemberAsync(id);
         return Ok(teamMemberResponse);
+    }
+
+    [HttpGet("{id}/team")]
+    public async Task<IActionResult> GetTeamsByMemberIdAsync(int id)
+    {
+        // if not data return bad request
+        if (await _teamMemberConsumingService.GetTeamsByMemberIdAsync(id) == null)
+        {
+            throw new BadRequestException("Team not found");
+        }
+
+        // Get team by teamMember id
+        var teamResponse = await _teamMemberConsumingService.GetTeamsByMemberIdAsync(id);
+        return Ok(teamResponse);
     }
 }

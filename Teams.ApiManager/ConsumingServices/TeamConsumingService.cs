@@ -172,4 +172,34 @@ public class TeamConsumingService : ITeamConsumingService
         // Delete correct
         return response.IsSuccessful ? new TeamDto() : null;
     }
+
+    public async Task<List<TeamMemberDto>?> GetTeamMembersByTeamIdAsync(int teamId)
+    {
+        // GET api/Team/{teamId}/members
+        var request = new RestRequest("Team/{teamId}/members");
+
+        // Add id to request
+        request.AddUrlSegment("teamId", teamId);
+
+        // Execute request
+        var response = await _client.GetAsync(request);
+
+        // Check status code
+        if (response.IsSuccessful)
+        {
+            // Content
+            var content = response.Content;
+
+            // Check content
+            if (content != null)
+            {
+                // Deserializar la respuesta en una lista de TeamMemberDto
+                var teamMembers = JsonConvert.DeserializeObject<List<TeamMemberDto>>(content);
+
+                return teamMembers;
+            }
+        }
+
+        throw new NotFoundException($"Team members with team id {teamId} not found");
+    }
 }
