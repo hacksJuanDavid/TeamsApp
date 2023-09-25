@@ -69,7 +69,7 @@ public class TeamMemberConsumingService : ITeamMemberConsumingService
         if (response.IsSuccessful)
         {
             // Deserialize response
-            var teamMemberJson = JsonConvert.DeserializeObject<JArray>(response.Content);
+            var teamMemberJson = JsonConvert.DeserializeObject<JArray>(response.Content!);
 
             // Return response
             return teamMemberJson;
@@ -95,7 +95,7 @@ public class TeamMemberConsumingService : ITeamMemberConsumingService
         if (response.IsSuccessful)
         {
             // Deserialize response
-            var teamMemberJson = JsonConvert.DeserializeObject<JObject>(response.Content);
+            var teamMemberJson = JsonConvert.DeserializeObject<JObject>(response.Content!);
 
             // Return response
             return teamMemberJson;
@@ -153,7 +153,7 @@ public class TeamMemberConsumingService : ITeamMemberConsumingService
         // Check status code
         if (response.IsSuccessful)
         {
-            return response.IsSuccessful ? null : null;
+            return null;
         }
         else
         {

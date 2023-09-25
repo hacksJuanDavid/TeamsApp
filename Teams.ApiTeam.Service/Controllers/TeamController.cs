@@ -119,4 +119,17 @@ public class TeamController : ControllerBase
     }
 
     // GET api/<TeamsController>/team/5/members
+    [HttpGet("{teamId}/members")]
+    public async Task<IActionResult> GetTeamMembersAsync(int teamId)
+    {
+        var teamMembers = await _teamRepository.GetTeamMembersByTeamIdAsync(teamId);
+
+        // Check if team exists
+        if (teamMembers == null)
+        {
+            throw new NotFoundException($"Team with id {teamId} does not exist");
+        }
+        
+        return Ok(_mapper.Map<List<TeamMemberDto>, List<TeamMemberDto>>(teamMembers));
+    }
 }

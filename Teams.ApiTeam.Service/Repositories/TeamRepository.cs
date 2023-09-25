@@ -1,3 +1,4 @@
+using Teams.ApiTeam.Service.Dtos;
 using Teams.ApiTeam.Service.Interfaces;
 using Teams.ApiTeam.Service.Models;
 
@@ -38,5 +39,10 @@ public class TeamRepository : ITeamRepository
     public async Task DeleteTeamAsync(int id)
     {
         await _teamService.DeleteTeamAsync(id);
+    }
+    
+    public async Task<List<TeamMemberDto>> GetTeamMembersByTeamIdAsync(int teamId)
+    {
+        return await _teamService.GetTeamMembersByTeamIdAsync(teamId);
     }
 }

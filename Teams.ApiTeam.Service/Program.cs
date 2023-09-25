@@ -3,9 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Teams.ApiTeam.Service.Context;
 using Teams.ApiTeam.Service.Extensions;
 using Teams.ApiTeam.Service.Middlewares;
+using Teams.ApiTeam.Service.Settings;
 
 //  Create the builder with the default configuration
 var builder = WebApplication.CreateBuilder(args);
+
+// Add AppSettings
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 // Add AppDbContext 
 builder.Services.AddDbContext<AppDbContext>(options =>

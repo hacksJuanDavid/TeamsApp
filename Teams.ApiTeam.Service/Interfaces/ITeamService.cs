@@ -1,3 +1,4 @@
+using Teams.ApiTeam.Service.Dtos;
 using Teams.ApiTeam.Service.Models;
 
 namespace Teams.ApiTeam.Service.Interfaces;
@@ -18,4 +19,7 @@ public interface ITeamService
     
     // DeleteTeam
     Task DeleteTeamAsync(int id);
+    
+    // GetTeamMembersByTeamId
+    Task<List<TeamMemberDto>> GetTeamMembersByTeamIdAsync(int teamId);
 }
