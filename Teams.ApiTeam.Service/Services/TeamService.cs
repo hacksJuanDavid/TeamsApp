@@ -1,8 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
-using Teams.ApiTeam.Service.Context;
 using Teams.ApiTeam.Service.Dtos;
 using Teams.ApiTeam.Service.Exceptions;
 using Teams.ApiTeam.Service.Interfaces;
@@ -14,13 +12,13 @@ namespace Teams.ApiTeam.Service.Services;
 public class TeamService : ITeamService
 {
     // Variables
-    private readonly AppDbContext _appDbContext;
+    private readonly ITeamRepository _teamRepository;
     private readonly RestClient _client;
 
     // Constructor
-    public TeamService(AppDbContext appDbContext, IOptions<AppSettings> apiSettings, RestClient client)
-    {
-        _appDbContext = appDbContext;
+    public TeamService(IOptions<AppSettings> apiSettings, RestClient client, ITeamRepository teamRepository)
+    {   
+        _teamRepository = teamRepository;
         _client = client;
 
         // ApiTeamMemberUrl
@@ -32,12 +30,18 @@ public class TeamService : ITeamService
 
     public async Task<List<Team>> GetAllTeamsAsync()
     {
-        return await _appDbContext.Set<Team>().ToListAsync();
+        // Return all teams
+        var teams = await _teamRepository.GetAllTeamsAsync();
+
+        return teams;
     }
 
     public async Task<Team> GetTeamByIdAsync(int id)
     {
-        var team = await _appDbContext.Set<Team>().FindAsync(id);
+        // Get team
+        var team = await _teamRepository.GetTeamByIdAsync(id);
+
+        // Check if team exists
         if (team == null)
         {
             throw new NotFoundException($"Team with id {id} not found");
@@ -48,33 +52,32 @@ public class TeamService : ITeamService
 
     public async Task<Team> CreateTeamAsync(Team team)
     {
-        var createdTeam = await _appDbContext.Set<Team>().AddAsync(team);
-        await _appDbContext.SaveChangesAsync();
-        return createdTeam.Entity;
+        // Create team
+        var createdTeam = await _teamRepository.CreateTeamAsync(team);
+        
+        return createdTeam;
     }
 
     public async Task<Team> UpdateTeamAsync(Team team)
     {
-        var original = await _appDbContext.Set<Team>().FindAsync(team.Id);
-
+        // Get team by id
+        var original = await _teamRepository.GetTeamByIdAsync(team.Id);
+        
         // Check if team exists
         if (original is null)
         {
             throw new NotFoundException($"Team with Id={team.Id} Not Found");
         }
-
-        // Check if team has a team
-        _appDbContext.Entry(original).CurrentValues.SetValues(team);
-
-        // Save changes
-        await _appDbContext.SaveChangesAsync();
-
-        return team;
-    }
+        
+        // Update team
+        var updatedTeam = await _teamRepository.UpdateTeamAsync(team);
+        
+        return updatedTeam;
+    }   
 
     public async Task DeleteTeamAsync(int id)
     {
-        var original = await _appDbContext.Set<Team>().FindAsync(id);
+        var original = await _teamRepository.GetTeamByIdAsync(id);
 
         // Check if team exists
         if (original is null)
@@ -95,17 +98,14 @@ public class TeamService : ITeamService
         }
 
         // Delete team
-        _appDbContext.Set<Team>().Remove(original);
-
-        // Save changes
-        await _appDbContext.SaveChangesAsync();
+        await _teamRepository.DeleteTeamAsync(original.Id);
     }
 
     // Get /teams/{teamId}/members
     public async Task<List<TeamMemberDto>> GetTeamMembersByTeamIdAsync(int teamId)
     {
         // Get team
-        var team = await _appDbContext.Set<Team>().FindAsync(teamId);
+        var team = await _teamRepository.GetTeamByIdAsync(teamId);
 
         // Check if team exists
         if (team == null)

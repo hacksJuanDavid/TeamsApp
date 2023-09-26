@@ -1,4 +1,6 @@
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Teams.ApiTeam.Service.Exceptions;
 
 namespace Teams.ApiTeam.Service.Middlewares;
@@ -6,6 +8,7 @@ namespace Teams.ApiTeam.Service.Middlewares;
 
 public static class ExceptionMiddlewareExtensions
 {
+    // Method to configure exception handler
     public static void ConfigureExceptionHandler(this IApplicationBuilder app)
     {
         if (app is null)
@@ -15,7 +18,23 @@ public static class ExceptionMiddlewareExtensions
 
         app.UseMiddleware<ExceptionMiddleware>();
     }
+    
+    // Method to ErrorDetails object from ActionContext
+    public static ErrorDetails ConstructErrorMessages(this ActionContext context)
+    {
+        var errors = context.ModelState.Values.Where(v => v.Errors.Count >= 1)
+            .SelectMany(v => v.Errors)
+            .Select(v => v.ErrorMessage)
+            .ToList();
 
+        return new ErrorDetails
+        {
+            ErrorType = ReasonPhrases.GetReasonPhrase((int)HttpStatusCode.BadRequest),
+            Errors = errors
+        };
+    }
+    
+    // Method to handle exception
     public static async Task HandleExceptionAsync(this HttpContext httpContext, Exception exception)
     {
         if (httpContext is null)

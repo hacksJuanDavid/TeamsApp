@@ -1,4 +1,5 @@
-using Teams.ApiTeam.Service.Dtos;
+using Microsoft.EntityFrameworkCore;
+using Teams.ApiTeam.Service.Context;
 using Teams.ApiTeam.Service.Interfaces;
 using Teams.ApiTeam.Service.Models;
 
@@ -6,43 +7,50 @@ namespace Teams.ApiTeam.Service.Repositories;
 
 public class TeamRepository : ITeamRepository
 {
+    
     // Variables
-    private readonly ITeamService _teamService;
-
+    private readonly AppDbContext _appDbContext;
+    
     // Constructor
-    public TeamRepository(ITeamService teamService)
+    public TeamRepository(AppDbContext appDbContext)
     {
-        _teamService = teamService;
-    }
-
-    // Methods
-    public async Task<List<Team>> GetAllTeamsAsync()
-    {
-        return await _teamService.GetAllTeamsAsync();
-    }
-
-    public async Task<Team> GetTeamByIdAsync(int id)
-    {
-        return await _teamService.GetTeamByIdAsync(id);
-    }
-
-    public async Task<Team> CreateTeamAsync(Team team)
-    {
-        return await _teamService.CreateTeamAsync(team);
-    }
-
-    public async Task<Team> UpdateTeamAsync(Team team)
-    {
-        return await _teamService.UpdateTeamAsync(team);
-    }
-
-    public async Task DeleteTeamAsync(int id)
-    {
-        await _teamService.DeleteTeamAsync(id);
+        _appDbContext = appDbContext;
     }
     
-    public async Task<List<TeamMemberDto>> GetTeamMembersByTeamIdAsync(int teamId)
+    // GetAllTeams
+    public async Task<List<Team>> GetAllTeamsAsync()
     {
-        return await _teamService.GetTeamMembersByTeamIdAsync(teamId);
+        return await _appDbContext.Set<Team>().ToListAsync();
     }
+
+    // GetTeamById
+    public async Task<Team?> GetTeamByIdAsync(int id)
+    {
+        return await _appDbContext.Set<Team>().FindAsync(id);
+    }
+    
+    // CreateTeam
+    public async Task<Team> CreateTeamAsync(Team team)
+    {
+        var createdTeam = await _appDbContext.Set<Team>().AddAsync(team);
+        await _appDbContext.SaveChangesAsync();
+        return createdTeam.Entity;
+    }
+
+    // UpdateTeam
+    public async Task<Team> UpdateTeamAsync(Team team)
+    {
+        var updatedTeam = _appDbContext.Set<Team>().Update(team);
+        await _appDbContext.SaveChangesAsync();
+        return updatedTeam.Entity;
+    }
+
+    // DeleteTeam
+    public async Task DeleteTeamAsync(int id)
+    {
+        var team = await _appDbContext.Set<Team>().FindAsync(id);
+        if (team != null) _appDbContext.Set<Team>().Remove(team);
+        await _appDbContext.SaveChangesAsync();
+    }
+    
 }
