@@ -1,4 +1,3 @@
-using Teams.ApiMember.Service.Dtos;
 using Teams.ApiMember.Service.Models;
 
 namespace Teams.ApiMember.Service.Interfaces;
@@ -9,7 +8,7 @@ public interface ITeamMemberRepository
     Task<List<TeamMember>> GetAllTeamMembersAsync();
     
     // GetTeamMemberById
-    Task<TeamMember> GetTeamMemberByIdAsync(int id);
+    Task<TeamMember?> GetTeamMemberByIdAsync(int id);
     
     // CreateTeamMember
     Task<TeamMember> CreateTeamMemberAsync(TeamMember teamMember);
@@ -20,6 +19,6 @@ public interface ITeamMemberRepository
     // DeleteTeamMember
     Task DeleteTeamMemberAsync(int id);
     
-    // GetTeamsByMemberId
-    Task<List<TeamDto>> GetTeamsByMemberIdAsync(int memberId);
+    // GetTeamMembersByTeamId
+    Task<TeamMember?> GetTeamMembersByMemberIdAsync(int memberId);
 }

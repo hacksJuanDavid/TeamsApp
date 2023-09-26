@@ -1,8 +1,6 @@
 using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Teams.ApiMember.Service.Dtos;
-using Teams.ApiMember.Service.Exceptions;
 using Teams.ApiMember.Service.Interfaces;
 using Teams.ApiMember.Service.Models;
 
@@ -13,24 +11,22 @@ namespace Teams.ApiMember.Service.Controllers;
 public class TeamMemberController : ControllerBase
 {
     // Variables
-    private readonly ITeamMemberRepository _teamMemberRepository;
+    private readonly ITeamMemberService _teamMemberService;
     private readonly IMapper _mapper;
-    private readonly IValidator<TeamMemberDto> _teamMemberValidator;
 
     // Constructor
-    public TeamMemberController(ITeamMemberRepository teamMemberRepository, IMapper mapper,
-        IValidator<TeamMemberDto> teamMemberValidator)
+    public TeamMemberController(ITeamMemberService teamMemberService, IMapper mapper)
     {
-        _teamMemberRepository = teamMemberRepository;
+        _teamMemberService = teamMemberService;
         _mapper = mapper;
-        _teamMemberValidator = teamMemberValidator;
     }
 
     // GET: api/<TeamsMemberController>
     [HttpGet]
     public async Task<IActionResult> GetAllTeamMembersAsync()
     {
-        var teamMembers = await _teamMemberRepository.GetAllTeamMembersAsync();
+        // Get all team members
+        var teamMembers = await _teamMemberService.GetAllTeamMembersAsync();
         return Ok(_mapper.Map<List<TeamMember>, List<TeamMemberDto>>(teamMembers));
     }
 
@@ -38,14 +34,8 @@ public class TeamMemberController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetTeamMemberByIdAsync(int id)
     {
-        var teamMember = await _teamMemberRepository.GetTeamMemberByIdAsync(id);
-
-        // Check if team member exists
-        if (teamMember == null)
-        {
-            throw new NotFoundException($"Team with id {id} does not exist");
-        }
-
+        // Get team member by id
+        var teamMember = await _teamMemberService.GetTeamMemberByIdAsync(id);
         return Ok(_mapper.Map<TeamMember, TeamMemberDto>(teamMember));
     }
 
@@ -53,62 +43,26 @@ public class TeamMemberController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateTeamMemberAsync([FromBody] TeamMemberDto teamMember)
     {
-        try
-        {
-            // Validate TeamMemberDto
-            var validationResult = await _teamMemberValidator.ValidateAsync(teamMember);
-            if (!validationResult.IsValid)
-            {
-                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                return BadRequest(new { Erros = errors });
-            }
-
-            return Ok(await _teamMemberRepository.CreateTeamMemberAsync(
-                _mapper.Map<TeamMemberDto, TeamMember>(teamMember)));
-        }
-        catch (Exception ex)
-        {
-            // Handle FluentValidation ValidationException
-            return BadRequest(new { Errors = new List<string> { ex.Message } });
-        }
+        // Create team member
+        var createdTeamMember = await _teamMemberService.CreateTeamMemberAsync(_mapper.Map<TeamMemberDto, TeamMember>(teamMember));
+        return Ok(_mapper.Map<TeamMember, TeamMemberDto>(createdTeamMember));
     }
 
     // PUT api/<TeamsMemberController>/5
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTeamMemberAsync(int id, [FromBody] TeamMemberDto teamMember)
-    {
-        try
-        {
-            // Validate TeamMemberDto
-            var validationResult = await _teamMemberValidator.ValidateAsync(teamMember);
-            if (!validationResult.IsValid)
-            {
-                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                return BadRequest(new { Errors = errors });
-            }
-
-            // Check if team member exists
-            var existingTeamMember = await _teamMemberRepository.GetTeamMemberByIdAsync(id);
-            if (existingTeamMember == null)
-            {
-                throw new NotFoundException($"Team member with id {id} does not exist");
-            }
-
-            return Ok(await _teamMemberRepository.UpdateTeamMemberAsync(
-                _mapper.Map<TeamMemberDto, TeamMember>(teamMember)));
-        }
-        catch (Exception ex)
-        {
-            // Handle FluentValidation ValidationException
-            return BadRequest(new { Errors = new List<string> { ex.Message } });
-        }
+    {   
+        // Update team member
+        var updatedTeamMember = await _teamMemberService.UpdateTeamMemberAsync(_mapper.Map<TeamMemberDto, TeamMember>(teamMember));
+        return Ok(_mapper.Map<TeamMember, TeamMemberDto>(updatedTeamMember));
     }
 
     // DELETE api/<TeamsMemberController>/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTeamMemberAsync(int id)
-    {
-        await _teamMemberRepository.DeleteTeamMemberAsync(id);
+    {   
+        // Delete team member
+        await _teamMemberService.DeleteTeamMemberAsync(id);
         return Ok(new { Message = $"Team member with id {id} has been deleted." });
     }
 
@@ -116,7 +70,8 @@ public class TeamMemberController : ControllerBase
     [HttpGet("{memberId}/teams")]
     public async Task<IActionResult> GetTeamsByMemberIdAsync(int memberId)
     {
-        var teams = await _teamMemberRepository.GetTeamsByMemberIdAsync(memberId);
+        // Get teams by member id
+        var teams = await _teamMemberService.GetTeamsByMemberIdAsync(memberId);
         return Ok(_mapper.Map<List<TeamDto>, List<TeamDto>>(teams));
     }
 }
