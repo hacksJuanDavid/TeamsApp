@@ -6,6 +6,6 @@ public class AppSettings
     public AppSettings()
     {
     }
-    
+
     public string? ApiTeamUrl { get; set; }
 }

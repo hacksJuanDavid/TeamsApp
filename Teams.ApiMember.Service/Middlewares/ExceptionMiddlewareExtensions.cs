@@ -5,7 +5,6 @@ using Teams.ApiMember.Service.Exceptions;
 
 namespace Teams.ApiMember.Service.Middlewares;
 
-
 public static class ExceptionMiddlewareExtensions
 {
     // Method to configure exception handler
@@ -33,7 +32,7 @@ public static class ExceptionMiddlewareExtensions
             Errors = errors
         };
     }
-    
+
     // Method to handle exception
     public static async Task HandleExceptionAsync(this HttpContext httpContext, Exception exception)
     {

@@ -11,7 +11,7 @@ public class TeamMember
 
     [Required] public string LastName { get; set; } = null!;
 
-    [Required][DataType(DataType.Date)] public DateTime BirthDate { get; set; }
+    [Required] [DataType(DataType.Date)] public DateTime BirthDate { get; set; }
 
     public string Position { get; set; } = null!;
 

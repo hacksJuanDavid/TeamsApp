@@ -44,23 +44,25 @@ public class TeamMemberController : ControllerBase
     public async Task<IActionResult> CreateTeamMemberAsync([FromBody] TeamMemberDto teamMember)
     {
         // Create team member
-        var createdTeamMember = await _teamMemberService.CreateTeamMemberAsync(_mapper.Map<TeamMemberDto, TeamMember>(teamMember));
+        var createdTeamMember =
+            await _teamMemberService.CreateTeamMemberAsync(_mapper.Map<TeamMemberDto, TeamMember>(teamMember));
         return Ok(_mapper.Map<TeamMember, TeamMemberDto>(createdTeamMember));
     }
 
     // PUT api/<TeamsMemberController>/5
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTeamMemberAsync(int id, [FromBody] TeamMemberDto teamMember)
-    {   
+    {
         // Update team member
-        var updatedTeamMember = await _teamMemberService.UpdateTeamMemberAsync(_mapper.Map<TeamMemberDto, TeamMember>(teamMember));
+        var updatedTeamMember =
+            await _teamMemberService.UpdateTeamMemberAsync(_mapper.Map<TeamMemberDto, TeamMember>(teamMember));
         return Ok(_mapper.Map<TeamMember, TeamMemberDto>(updatedTeamMember));
     }
 
     // DELETE api/<TeamsMemberController>/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTeamMemberAsync(int id)
-    {   
+    {
         // Delete team member
         await _teamMemberService.DeleteTeamMemberAsync(id);
         return Ok(new { Message = $"Team member with id {id} has been deleted." });
