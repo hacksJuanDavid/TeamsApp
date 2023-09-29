@@ -21,5 +21,5 @@ public interface ITeamService
     Task DeleteTeamAsync(int id);
     
     // GetTeamMembersByTeamId
-    Task<List<TeamMemberDto>> GetTeamMembersByTeamIdAsync(int teamId);
+    Task<List<TeamMemberDto>?> GetTeamMembersByTeamIdAsync(int teamId);
 }
