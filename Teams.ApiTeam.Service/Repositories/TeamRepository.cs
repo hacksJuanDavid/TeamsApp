@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Teams.ApiTeam.Service.Context;
+using Teams.ApiTeam.Service.Exceptions;
 using Teams.ApiTeam.Service.Interfaces;
 using Teams.ApiTeam.Service.Models;
 
@@ -7,16 +8,15 @@ namespace Teams.ApiTeam.Service.Repositories;
 
 public class TeamRepository : ITeamRepository
 {
-    
     // Variables
     private readonly AppDbContext _appDbContext;
-    
+
     // Constructor
     public TeamRepository(AppDbContext appDbContext)
     {
         _appDbContext = appDbContext;
     }
-    
+
     // GetAllTeams
     public async Task<List<Team>> GetAllTeamsAsync()
     {
@@ -28,7 +28,7 @@ public class TeamRepository : ITeamRepository
     {
         return await _appDbContext.Set<Team>().FindAsync(id);
     }
-    
+
     // CreateTeam
     public async Task<Team> CreateTeamAsync(Team team)
     {
@@ -40,9 +40,22 @@ public class TeamRepository : ITeamRepository
     // UpdateTeam
     public async Task<Team> UpdateTeamAsync(Team team)
     {
-        var updatedTeam = _appDbContext.Set<Team>().Update(team);
-        await _appDbContext.SaveChangesAsync();
-        return updatedTeam.Entity;
+        // Busca la entidad original por ID
+        var original = await _appDbContext.Teams.FindAsync(team.Id);
+
+        if (original != null)
+        {
+            // Desconecta la entidad original del contexto
+            _appDbContext.Entry(original).State = EntityState.Detached;
+
+            // Actualiza la entidad
+            var updatedTeam = _appDbContext.Update(team);
+            await _appDbContext.SaveChangesAsync();
+
+            return updatedTeam.Entity;
+        }
+
+        throw new NotFoundException($"Team with Id={team.Id} Not Found");
     }
 
     // DeleteTeam
@@ -52,5 +65,4 @@ public class TeamRepository : ITeamRepository
         if (team != null) _appDbContext.Set<Team>().Remove(team);
         await _appDbContext.SaveChangesAsync();
     }
-    
 }

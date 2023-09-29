@@ -17,7 +17,7 @@ public class TeamService : ITeamService
 
     // Constructor
     public TeamService(IOptions<AppSettings> apiSettings, RestClient client, ITeamRepository teamRepository)
-    {   
+    {
         _teamRepository = teamRepository;
         _client = client;
 
@@ -52,9 +52,18 @@ public class TeamService : ITeamService
 
     public async Task<Team> CreateTeamAsync(Team team)
     {
+        // Get team by id
+        var original = await _teamRepository.GetTeamByIdAsync(team.Id);
+
+        // Check if team exists
+        if (original != null)
+        {
+            throw new BadRequestException($"Team with Id={team.Id} already exists");
+        }
+
         // Create team
         var createdTeam = await _teamRepository.CreateTeamAsync(team);
-        
+
         return createdTeam;
     }
 
@@ -62,18 +71,18 @@ public class TeamService : ITeamService
     {
         // Get team by id
         var original = await _teamRepository.GetTeamByIdAsync(team.Id);
-        
+
         // Check if team exists
         if (original is null)
         {
             throw new NotFoundException($"Team with Id={team.Id} Not Found");
         }
-        
+
         // Update team
         var updatedTeam = await _teamRepository.UpdateTeamAsync(team);
-        
+
         return updatedTeam;
-    }   
+    }
 
     public async Task DeleteTeamAsync(int id)
     {
@@ -85,7 +94,7 @@ public class TeamService : ITeamService
             throw new NotFoundException($"Team with Id={id} Not Found");
         }
 
-        //Delete team members
+        // Delete team members
         var teamMembers = await GetTeamMembersByTeamIdAsync(id);
 
         foreach (var request in teamMembers.Select(teamMember => new RestRequest($"TeamMember/{teamMember.Id}")))
@@ -100,6 +109,7 @@ public class TeamService : ITeamService
         // Delete team
         await _teamRepository.DeleteTeamAsync(original.Id);
     }
+
 
     // Get /teams/{teamId}/members
     public async Task<List<TeamMemberDto>> GetTeamMembersByTeamIdAsync(int teamId)

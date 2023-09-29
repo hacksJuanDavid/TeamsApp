@@ -16,7 +16,8 @@ public class TeamMemberService : ITeamMemberService
     private readonly RestClient _client;
 
     // Constructor
-    public TeamMemberService(IOptions<AppSettings> apiSetting, RestClient client, ITeamMemberRepository teamMemberRepository)
+    public TeamMemberService(IOptions<AppSettings> apiSetting, RestClient client,
+        ITeamMemberRepository teamMemberRepository)
     {
         _teamMemberRepository = teamMemberRepository;
         _client = client;
@@ -34,10 +35,10 @@ public class TeamMemberService : ITeamMemberService
     }
 
     public async Task<TeamMember> GetTeamMemberByIdAsync(int id)
-    {   
+    {
         // Get team member by id
         var teamMember = await _teamMemberRepository.GetTeamMemberByIdAsync(id);
-        
+
         // Check if team member exists
         if (teamMember == null)
         {
@@ -49,6 +50,15 @@ public class TeamMemberService : ITeamMemberService
 
     public async Task<TeamMember> CreateTeamMemberAsync(TeamMember teamMember)
     {
+        // Get team member by id
+        var original = await _teamMemberRepository.GetTeamMemberByIdAsync(teamMember.Id);
+
+        // Check if team member exists
+        if (original != null)
+        {
+            throw new BadRequestException($"Team member with id {teamMember.Id} already exists");
+        }
+
         // Create team member
         var createdTeamMember = await _teamMemberRepository.CreateTeamMemberAsync(teamMember);
 
@@ -56,7 +66,7 @@ public class TeamMemberService : ITeamMemberService
     }
 
     public async Task<TeamMember> UpdateTeamMemberAsync(TeamMember teamMember)
-    {   
+    {
         // Get team member by id
         var original = await _teamMemberRepository.GetTeamMemberByIdAsync(teamMember.Id);
 
@@ -65,10 +75,10 @@ public class TeamMemberService : ITeamMemberService
         {
             throw new NotFoundException($"TeamMember with Id={teamMember.Id} Not Found");
         }
-        
+
         // Update team member
         var updatedTeamMember = await _teamMemberRepository.UpdateTeamMemberAsync(teamMember);
-        
+
         return updatedTeamMember;
     }
 
@@ -124,5 +134,4 @@ public class TeamMemberService : ITeamMemberService
 
         return teams;
     }
-
 }

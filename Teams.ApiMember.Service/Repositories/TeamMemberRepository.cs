@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Teams.ApiMember.Service.Context;
+using Teams.ApiMember.Service.Exceptions;
 using Teams.ApiMember.Service.Interfaces;
 using Teams.ApiMember.Service.Models;
 
@@ -36,9 +37,22 @@ public class TeamMemberRepository : ITeamMemberRepository
 
     public async Task<TeamMember> UpdateTeamMemberAsync(TeamMember teamMember)
     {
-        var updatedTeamMember = _appDbContext.Set<TeamMember>().Update(teamMember);
-        await _appDbContext.SaveChangesAsync();
-        return updatedTeamMember.Entity;
+        // Busca la entidad original por ID
+        var original = await _appDbContext.TeamMembers.FindAsync(teamMember.Id);
+
+        if (original != null)
+        {
+            // Desconecta la entidad original del contexto
+            _appDbContext.Entry(original).State = EntityState.Detached;
+
+            // Actualiza la entidad
+            var updatedTeamMember = _appDbContext.Update(teamMember);
+            await _appDbContext.SaveChangesAsync();
+
+            return updatedTeamMember.Entity;
+        }
+
+        throw new NotFoundException($"Team member with Id={teamMember.Id} Not Found");
     }
 
     public async Task DeleteTeamMemberAsync(int id)
@@ -47,7 +61,7 @@ public class TeamMemberRepository : ITeamMemberRepository
         if (teamMember != null) _appDbContext.Set<TeamMember>().Remove(teamMember);
         await _appDbContext.SaveChangesAsync();
     }
-    
+
     public async Task<TeamMember?> GetTeamMembersByMemberIdAsync(int memberId)
     {
         return await _appDbContext.Set<TeamMember>().Where(x => x.TeamId == memberId).FirstOrDefaultAsync();
