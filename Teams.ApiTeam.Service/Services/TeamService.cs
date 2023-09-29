@@ -105,7 +105,7 @@ public class TeamService : ITeamService
                 if (!response.IsSuccessful)
                 {
                     // Log or handle the error, but do not throw an exception to prevent stopping the team deletion process.
-                    Console.WriteLine($"Error deleting teamMember: {response.StatusCode}");
+                    throw new BadRequestException($"Error deleting teamMember: {response.StatusCode}");
                 }
             }
         }
