@@ -97,22 +97,25 @@ public class TeamService : ITeamService
         // Delete team members
         var teamMembers = await GetTeamMembersByTeamIdAsync(id);
 
-        foreach (var request in teamMembers.Select(teamMember => new RestRequest($"TeamMember/{teamMember.Id}")))
+        if (teamMembers != null)
         {
-            var response = await _client.DeleteAsync(request);
-            if (!response.IsSuccessful)
+            foreach (var teamMember in teamMembers)
             {
-                throw new BadRequestException($"Error delete teamMember: {response.StatusCode}");
+                var response = await _client.DeleteAsync(new RestRequest($"TeamMember/{teamMember.Id}"));
+                if (!response.IsSuccessful)
+                {
+                    // Log or handle the error, but do not throw an exception to prevent stopping the team deletion process.
+                    Console.WriteLine($"Error deleting teamMember: {response.StatusCode}");
+                }
             }
         }
 
         // Delete team
-        await _teamRepository.DeleteTeamAsync(original.Id);
+        await _teamRepository.DeleteTeamAsync(id);
     }
 
-
     // Get /teams/{teamId}/members
-    public async Task<List<TeamMemberDto>> GetTeamMembersByTeamIdAsync(int teamId)
+    public async Task<List<TeamMemberDto>?> GetTeamMembersByTeamIdAsync(int teamId)
     {
         // Get team
         var team = await _teamRepository.GetTeamByIdAsync(teamId);
@@ -139,21 +142,8 @@ public class TeamService : ITeamService
         var teamMembers = JsonConvert.DeserializeObject<List<TeamMemberDto>>(response.Content!);
 
         // Filter team members by team id
-        if (teamMembers != null)
-        {
-            teamMembers = teamMembers.Where(teamMember => teamMember.TeamId == teamId).ToList();
+        teamMembers = teamMembers?.Where(teamMember => teamMember.TeamId == teamId).ToList();
 
-            // Check if team members exists
-            if (teamMembers.Count == 0)
-            {
-                throw new NotFoundException($"Team with {teamId} not members found");
-            }
-
-            return teamMembers;
-        }
-        else
-        {
-            throw new NotFoundException($"Team members with team id {teamId} not found");
-        }
+        return teamMembers;
     }
 }
