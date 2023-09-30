@@ -72,6 +72,6 @@ public class TeamController : ControllerBase
     {
         // Get team members by team id
         var teamMembers = await _teamService.GetTeamMembersByTeamIdAsync(teamId);
-        return Ok(_mapper.Map<List<TeamMemberDto>, List<TeamMemberDto>>(teamMembers));
+        return Ok(_mapper.Map<List<TeamMemberDto>, List<TeamMemberDto>>(teamMembers!));
     }
 }
