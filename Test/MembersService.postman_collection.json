@@ -1,0 +1,191 @@
+{
+  "info": {
+    "name": "TeamMember API Tests",
+    "_postman_id": "your-unique-postman-id",
+    "description": "Tests for the TeamMember API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GetAllTeamMembers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CreateTeamMember",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"firstName\": \"John\", \"lastName\": \"Doe\", \"birthDate\": \"1990-01-01T00:00:00Z\", \"position\": \"Developer\", \"phone\": \"123-456-7890\", \"teamId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetByIdTeamMember",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/1",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UpdateTeamMember",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 1, \"firstName\": \"Updated John\", \"lastName\": \"Updated Doe\", \"birthDate\": \"1990-01-01T00:00:00Z\", \"position\": \"Updated Developer\", \"phone\": \"987-654-3210\", \"teamId\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/1",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteTeamMember",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/1",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetTeamMemberTeams",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/1/teams",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "1", "teams"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetByIdTeamMember Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/999",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "999"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UpdateTeamMember Not Found",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id\": 999, \"firstName\": \"Updated John\", \"lastName\": \"Updated Doe\", \"birthDate\": \"1990-01-01T00:00:00Z\", \"position\": \"Updated Developer\", \"phone\": \"987-654-3210\", \"teamId\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/999",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "999"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteTeamMember Not Found",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/999",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "999"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetTeamMemberTeams Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/999/teams",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "999", "teams"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Server Internal Error",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/TeamMember/error",
+          "protocol": "http",
+          "host": ["localhost", "5001"],
+          "path": ["api", "TeamMember", "error"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
