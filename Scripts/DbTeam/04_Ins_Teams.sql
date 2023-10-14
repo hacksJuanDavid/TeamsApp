@@ -1,5 +1,5 @@
 -- Insertar datos en la tabla "Teams"
-INSERT INTO `Teams` (Name, Coach, Conference) 
+INSERT INTO `teamsservicedb`.`Teams` (Name, Coach, Conference) 
 VALUES 
   ('Atlanta Hawks', 'Nate McMillan', 'East'),
   ('Boston Celtics', 'Ime Udoka', 'East'),

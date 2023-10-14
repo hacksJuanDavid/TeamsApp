@@ -57,6 +57,21 @@ source  /home/thenowrock/RiderProjects/TeamsApp/Scripts/DbTeam
 source  /home/thenowrock/RiderProjects/TeamsApp/Scripts/DbTeamMember
 ```
 
+## Strings connections localhost
+
+```bash
+  // Teams
+  "ConnectionStrings": {
+    "CnnStr": "server=localhost;port=3306;database=teamsservicedb;user=servicetemasuser;password=T3M34s4msUs3r*01"
+  },
+
+  // Members
+  "ConnectionStrings": {
+    "CnnStr": "server=localhost;port=3306;database=membersservicedb;user=membersserviceuser;password=M34msS3rv1c3Us3r*01"
+  },
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+

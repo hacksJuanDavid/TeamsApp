@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  mysql1:
+    image: mysql:latest
+    restart: always
+    container_name: mysql1_container_teamservice
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: teamsservicedb
+      MYSQL_USER: serviceteamsuser
+      MYSQL_PASSWORD: T3M34s4msUs3r*01
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata1:/var/lib/mysql
+
+  mysql2:
+    image: mysql:latest
+    restart: always
+    container_name: mysql2_container_memberservice
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: membersservicedb
+      MYSQL_USER: servicememberuser
+      MYSQL_PASSWORD: M34msS3rv1c3Us3r*01
+    ports:
+      - "3308:3306"
+    volumes:
+      - dbdata2:/var/lib/mysql
+
+volumes:
+  dbdata1:
+  dbdata2:
